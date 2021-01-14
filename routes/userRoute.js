@@ -34,6 +34,21 @@ const userRoute = (app) => {
 
             res.status(201).send('ok usuario criado')//retorno
         }) //criar usuario
+        .put((req, res) => {//atualizar
+            const users = getUsers()
+
+            saveUser(users.map(user => {
+                if (user.id === req.params.id) {
+                    return {
+                        ...user,
+                        ...req.body
+                    }
+                }
+
+                return user
+            }))
+            res.status(200).send('ok usuario atualizado')
+        })
 }
 
 module.exports = userRoute
