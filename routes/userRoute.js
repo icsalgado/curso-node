@@ -6,8 +6,8 @@ const filePath = join(__dirname, 'users.json') //arquivo que vai armazenar usuar
 
 const getUsers = () => {
     const data = fs.existsSync(filePath)//testar se o arquivo existe
-        ?fs.readFileSync(filePath)//retorno positivo
-        :[]//retorno negativo
+        ? fs.readFileSync(filePath)//retorno positivo
+        : []//retorno negativo
 
         try {
             return JSON.parse(data)
@@ -21,11 +21,19 @@ const saveUser = (users) => fs.writeFileSync(filePath, JSON.stringify(users, nul
 //funções
 const userRoute = (app) => {
     app.route('/users/:id?')
-        .get((rew, res) => {
+        .get((req, res) => {
             const users = getUsers()
 
-            res.send({users})
+            res.send({ users })
         })
+        .post((req, res) => {
+            const users = getUsers()
+
+            users.push(req.body)//corpo da requisição
+            saveUser(users)
+
+            res.status(201).send('ok usuario criado')//retorno
+        }) //criar usuario
 }
 
 module.exports = userRoute
