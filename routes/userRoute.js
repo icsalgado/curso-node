@@ -49,6 +49,13 @@ const userRoute = (app) => {
             }))
             res.status(200).send('ok usuario atualizado')
         })
+        .delete((req, res) => {//removendo usuarios
+            const users = getUsers()
+
+            saveUser(users.filter(user => user.id !== req.params.id))
+
+            res.status(200).send('ok usuario deletado')
+        })
 }
 
 module.exports = userRoute
